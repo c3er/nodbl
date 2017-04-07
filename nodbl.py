@@ -14,11 +14,11 @@ OUTDIR = "output"
 BLOCKSIZE = 104857600  # 100 MB
 
 
-_known_filehashs = {}
+_known_files = {}
 
 
 def error(msg):
-    print(msg)
+    print(msg, file=sys.stderr)
     exit(1)
 
 
@@ -37,20 +37,19 @@ def gethash(filepath):
     return checksum.digest()
 
 
-def getpathcount(path):
-    pathparts = re.split(r"[/\\]", path)
-    return len(pathparts)
-
-
 def getfilelist(root, subpath=""):
     filelist = []
+
     for file in os.listdir(os.path.join(root, subpath)):
         filepath = os.path.join(subpath, file)
         if os.path.isdir(os.path.join(root, filepath)):
             filelist += getfilelist(root, filepath)
         else:
             filelist.append(filepath)
-    filelist.sort(key=getpathcount)
+
+    getpathpartcount = lambda path: len(re.split(r"[/\\]", path))
+    filelist.sort(key=getpathpartcount)
+
     return filelist
 
 
@@ -83,12 +82,12 @@ def main():
         dstpath = os.path.join(outdir, file)
         filehash = gethash(srcpath)
         
-        if filehash not in _known_filehashs.keys():
+        if filehash not in _known_files.keys():
             print(str2ascii('Copy: "{}"'.format(srcpath)))
             copy(srcpath, dstpath)
-            _known_filehashs[filehash] = srcpath
+            _known_files[filehash] = srcpath
         else:
-            print(str2ascii('Known: "{}" as "{}"'.format(srcpath, _known_filehashs[filehash])))
+            print(str2ascii('Known: "{}" as "{}"'.format(srcpath, _known_files[filehash])))
 
 
 if __name__ == "__main__":
