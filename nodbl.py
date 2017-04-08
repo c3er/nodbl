@@ -14,9 +14,6 @@ OUTDIR = "output"
 BLOCKSIZE = 104857600  # 100 MB
 
 
-_known_files = {}
-
-
 def error(msg):
     print(msg, file=sys.stderr)
     exit(1)
@@ -77,17 +74,18 @@ def main():
         error("Given argument is not a directory.")
 
     outdir = os.path.join(getscriptpath(__file__), OUTDIR)
+    known_files = {}
     for file in getfilelist(dirpath):
         srcpath = os.path.join(dirpath, file)
         dstpath = os.path.join(outdir, file)
         filehash = gethash(srcpath)
         
-        if filehash not in _known_files.keys():
+        if filehash not in known_files.keys():
             print(str2ascii('Copy: "{}"'.format(srcpath)))
             copy(srcpath, dstpath)
-            _known_files[filehash] = srcpath
+            known_files[filehash] = srcpath
         else:
-            print(str2ascii('Known: "{}" as "{}"'.format(srcpath, _known_files[filehash])))
+            print(str2ascii('Known: "{}" as "{}"'.format(srcpath, known_files[filehash])))
 
 
 if __name__ == "__main__":
