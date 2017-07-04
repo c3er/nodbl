@@ -2,6 +2,12 @@
 # -*- coding: utf-8 -*-
 
 
+"""No double files
+
+A tool that filters doubled files out of a directory tree.
+"""
+
+
 import sys
 import os
 import re
@@ -15,6 +21,7 @@ BLOCKSIZE = 104857600  # 100 MB
 
 
 def log(*args, **kw):
+    """Helper to ensure that messages are flushed to stdout directly."""
     print(*args, **kw, flush=True)
 
 
@@ -28,6 +35,7 @@ def getscriptpath(script):
 
 
 def gethash(filepath):
+    """Build a hash sum of the content of the given file."""
     checksum = hashlib.md5()
     with open(filepath, "rb") as f:
         while True:
@@ -39,6 +47,12 @@ def gethash(filepath):
 
 
 def getfilelist(root, subpath=""):
+    """Get a list of all file paths under the given directory (first parameter).
+
+    The paths in the returned list are relative to the given root path, meaning
+    that they do not contain the given path. The second parameter "subpath" is
+    for internal use only.
+    """
     filelist = []
 
     for file in os.listdir(os.path.join(root, subpath)):
