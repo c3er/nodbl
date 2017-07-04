@@ -20,9 +20,17 @@ OUTDIR = "output"
 BLOCKSIZE = 104857600  # 100 MB
 
 
-def log(*args, **kw):
+def str2ascii(text):
+    charlist = list(text)
+    for i, char in enumerate(charlist):
+        if char not in string.printable:
+            charlist[i] = "&#" + str(ord(char)) + ";"
+    return "".join(charlist)
+
+
+def log(*args, sep=" ", **kw):
     """Helper to ensure that messages are flushed to stdout directly."""
-    print(*args, **kw, flush=True)
+    print(str2ascii(sep.join(args)), **kw, flush=True)
 
 
 def error(msg):
@@ -74,14 +82,6 @@ def copy(srcpath, dstpath):
     shutil.copy(srcpath, dstpath)
 
 
-def str2ascii(text):
-    charlist = list(text)
-    for i, char in enumerate(charlist):
-        if char not in string.printable:
-            charlist[i] = "&#" + str(ord(char)) + ";"
-    return "".join(charlist)
-
-
 def main():
     args = sys.argv
     if len(args) != 2:
@@ -102,11 +102,11 @@ def main():
         filehash = gethash(srcpath)
         
         if filehash not in known_files.keys():
-            log(str2ascii('Copy: "{}"'.format(srcpath)))
+            log('Copy: "{}"'.format(srcpath))
             copy(srcpath, dstpath)
             known_files[filehash] = srcpath
         else:
-            log(str2ascii('Known: "{}" as "{}"'.format(srcpath, known_files[filehash])))
+            log('Known: "{}" as "{}"'.format(srcpath, known_files[filehash]))
 
 
 if __name__ == "__main__":
