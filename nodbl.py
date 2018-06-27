@@ -44,7 +44,7 @@ def getscriptpath(script):
 
 def gethash(filepath):
     """Build a hash sum of the content of the given file."""
-    checksum = hashlib.md5()
+    checksum = hashlib.sha256()
     with open(filepath, "rb") as f:
         while True:
             data = f.read(BLOCKSIZE)
