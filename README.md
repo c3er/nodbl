@@ -22,7 +22,7 @@ This example assumes that you opened a PowerShell in the directory of the tool:
 
 ### Other files
 
-There are some batch files that make it more comfortable to use te tool. It is recommended to use `nodbl.cmd` that calls the PowerShell script `nodbl.ps1`. It is possible to drag&drop the directory of interest to these batch files. As usual the output directory will be in the same place as the tool (and the batch files).
+There are some batch files that make it more comfortable to use the tool. It is recommended to use `nodbl.cmd` that calls the PowerShell script `nodbl.ps1`. It is possible to drag&drop the directory of interest to these batch files. As usual the output directory will be in the same place as the tool (and the batch files).
 
 #### `nodbl.cmd`
 
