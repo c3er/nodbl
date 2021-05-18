@@ -79,7 +79,7 @@ def getfilelist(root, subpath=""):
 def copy(srcpath, dstpath):
     dstdir = os.path.split(dstpath)[0]
     os.makedirs(dstdir, exist_ok=True)
-    shutil.copy(srcpath, dstpath)
+    shutil.copy2(srcpath, dstpath)
 
 
 def main():
